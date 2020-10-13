@@ -32,6 +32,11 @@ steps:
 
 - task: DotNetCoreCLI@2
   inputs:
+    command: 'build'
+    projects: '$(solution)'
+
+- task: DotNetCoreCLI@2
+  inputs:
     command: 'test'
     projects: 'dotnet/aspnetcore31/webappWithTests/Application/aspnet-core-dotnet-core.UnitTests/aspnet-core-dotnet-core.UnitTests.csproj'
 
@@ -39,6 +44,7 @@ steps:
   inputs:
     command: 'publish'
     projects: $(solution)
+    nobuild: true
     publishWebProjects: true
     packDirectory: '$(Build.ArtifactStagingDirectory)'
     configuration: $(buildConfiguration)
