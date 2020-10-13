@@ -33,7 +33,7 @@ jobs:
   - task: DotNetCoreCLI@2
     inputs:
       command: 'build'
-      projects: '$(projects)/webAppWithTests/**/*.csproj'
+      projects: '$(projects)/webappWithTests/**/*.csproj'
 
 - job: Build_webAppOnLinux
   steps:
