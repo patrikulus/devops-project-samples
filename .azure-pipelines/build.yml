@@ -34,12 +34,10 @@ steps:
 
 - task: DotNetCoreCLI@2
   inputs:
-    command: 'publish'
-    workingDirectory: $(WorkingDirectory)
-    publishWebProjects: true
-    projects: '$(Solution)'
+    command: 'custom'
+    custom: 'publish'
     arguments: '$(Solution) -o $(Build.ArtifactStagingDirectory)/Output'
-    modifyOutputPath: true
+    workingDirectory: '$(WorkingDirectory)'
 
 - publish: $(Build.ArtifactStagingDirectory)
   artifact: 'drop'
