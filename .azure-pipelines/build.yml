@@ -1,0 +1,42 @@
+trigger:
+- master
+
+pr: none
+
+pool: 'DevOps'
+
+variables:
+  Nuget.Version: '5.7.0'
+  DotNet.Version: '3.1.x'
+  WorkingDirectory: 'dotnet/aspnetcore31/webappWithTests/Application'
+  Solution: '$(WorkingDirectory)/aspnet-core-dotnet-core.sln'
+
+steps:
+- task: NuGetToolInstaller@1
+  inputs:
+    versionSpec: $(Nuget.Version)
+
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: $(DotNet.Version)
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: '$(Solution)'
+    feedsToUse: 'select'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: '$(Solution)'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    workingDirectory: $(WorkingDirectory)
+    publishWebProjects: true
+
+- publish: $(Build.ArtifactStagingDirectory)
+  artifact: 'drop'
