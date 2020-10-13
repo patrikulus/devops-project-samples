@@ -38,7 +38,7 @@ steps:
     workingDirectory: $(WorkingDirectory)
     publishWebProjects: true
     projects: '$(WorkingDirectory)/**/*.csproj'
-    arguments: '-o $(Build.ArtifactStagingDirectory)/Output'
+    arguments: '$(Solution) -o $(Build.ArtifactStagingDirectory)/Output'
     modifyOutputPath: true
 
 - publish: $(Build.ArtifactStagingDirectory)
