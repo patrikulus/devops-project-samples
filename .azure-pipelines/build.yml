@@ -36,7 +36,7 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: false
-    projects: '$(Solution)'
+    projects: '$(WorkingDirectory)/aspnet-core-dotnet-core/*.csproj'
     arguments: '-o $(Build.ArtifactStagingDirectory)/Output'
     modifyOutputPath: true
 
