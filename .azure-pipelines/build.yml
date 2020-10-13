@@ -32,7 +32,13 @@ steps:
     command: 'test'
     projects: '$(WorkingDirectory)/*.UnitTests/*.csproj'
 
-- script: dotnet publish $(Solution) -o $(Build.ArtifactStagingDirectory)/Output
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: '$(Solution)'
+    arguments: '-o $(Build.ArtifactStagingDirectory)/Output'
+    modifyOutputPath: true
 
 - publish: $(Build.ArtifactStagingDirectory)
   artifact: 'drop'
