@@ -2,12 +2,14 @@ trigger: none
 pr: none
 
 parameters:
-- name: environment
-  displayName: App Environment
-  type: string
-  values:
-    - test
-    - prod
+  environment: '$(Environment)'
+  appServicePlanName: '$(AppServicePlanName)'
+  webAppName: '$(WebAppName)'
+  azureConnectionName: '$(AzureConnectionName)'
+  subscriptionId: '$(SubscriptionId)'
+  resourceGroupName: '$(ResourceGroupName)'
+  location: 'North Europe'
+  sku: 'F1'
   
 resources:
   pipelines:
@@ -29,14 +31,14 @@ jobs:
         - task: AzureResourceManagerTemplateDeployment@3
           inputs:
             deploymentScope: 'Resource Group'
-            azureResourceManagerConnection: '$(AzureConnectionName)'
-            subscriptionId: '$(SubscriptionId)'
+            azureResourceManagerConnection: '${{ parameters.azureConnectionName }}'
+            subscriptionId: '${{ parameters.subscriptionId }}'
             action: 'Create Or Update Resource Group'
-            resourceGroupName: '$(ResourceGroupName)'
-            location: '$(Location)'
+            resourceGroupName: '${{ parameters.resourceGroupName }}'
+            location: '${{ parameters.location }}'
             templateLocation: 'URL of the file'
             csmFileLink: 'https://raw.githubusercontent.com/patrikulus/devops-project-samples/master/dotnet/aspnetcore31/webAppOnLinux/ArmTemplates/linux-webapp-template.json'
-            overrideParameters: '-webAppName $(WebAppName) -hostingPlanName $(AppServicePlanName) -appInsightsLocation $(Location) -sku $(Sku)'
+            overrideParameters: '-webAppName ${{ parameters.webAppName }} -hostingPlanName ${{ parameters.appServicePlanName }} -appInsightsLocation ${{ parameters.location }} -sku ${{ parameters.sku }}'
       deploy:
         steps:
         - download: BuildApp
@@ -44,9 +46,9 @@ jobs:
           displayName: 'Deploy Azure App Service'
           inputs:
             ConnectionType: 'AzureRM'
-            azureSubscription: '$(AzureConnectionName)'
+            azureSubscription: '${{ parameters.azureConnectionName }}'
             appType: 'webAppLinux'
-            WebAppName: '$(WebAppName)'
+            WebAppName: '${{ parameters.webAppName }}'
             packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
       on:
         failure:
