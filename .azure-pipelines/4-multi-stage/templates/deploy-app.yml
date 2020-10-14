@@ -28,7 +28,7 @@ jobs:
             action: 'Create Or Update Resource Group'
             resourceGroupName: '${{ parameters.resourceGroupName }}'
             location: '${{ parameters.location }}'
-            csmFile: '$(System.DefaultWorkingDirectory)/**/arm/*.json'
+            csmFile: '$(Pipeline.Workspace)/**/arm/*.json'
             overrideParameters: '-webAppName ${{ parameters.webAppName }} -hostingPlanName ${{ parameters.appServicePlanName }} -appInsightsLocation "NorthEurope" -sku ${{ parameters.sku }}'
       deploy:
         steps:
