@@ -42,4 +42,4 @@ jobs:
       modifyOutputPath: true
   
   - publish: $(Build.ArtifactStagingDirectory)
-    artifact: 'drop'
+    artifact: '${{ parameters.appName }}'
