@@ -2,42 +2,43 @@ parameters:
   nugetVersion: '5.7.0'
   dotnetSdkVersion: '3.1.x'
   solutionRootPath: ''
+
+jobs:
+- job: build-dotnet-app
+  pool: 'DevOps'
+  variables:
+    Solution: '${{ parameters.solutionRootPath }}/**/*.csproj'
+    UnitTestsProject: '${{ parameters.solutionRootPath }}/*.UnitTests/*.csproj'
+    WebAppProject: '${{ parameters.solutionRootPath }}/aspnet-core-dotnet-core/*.csproj'
   
-pool: 'DevOps'
-
-variables:
-  Solution: '${{ parameters.solutionRootPath }}/**/*.csproj'
-  UnitTestsProject: '${{ parameters.solutionRootPath }}/*.UnitTests/*.csproj'
-  WebAppProject: '${{ parameters.solutionRootPath }}/aspnet-core-dotnet-core/*.csproj'
-
-steps:
-- task: NuGetToolInstaller@1
-  inputs:
-    versionSpec: ${{ parameters.nugetVersion }}
-
-- task: UseDotNet@2
-  inputs:
-    packageType: 'sdk'
-    version: ${{ parametrers.dotnetSdkVersion }}
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'restore'
-    projects: '$(Solution)'
-    feedsToUse: 'select'
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'test'
-    projects: '$(UnitTestsProject)'
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'publish'
-    publishWebProjects: false
-    projects: '$(WebAppProject)'
-    arguments: '-o $(Build.ArtifactStagingDirectory)/Output'
-    modifyOutputPath: true
-
-- publish: $(Build.ArtifactStagingDirectory)
-  artifact: 'drop'
+  steps:
+  - task: NuGetToolInstaller@1
+    inputs:
+      versionSpec: ${{ parameters.nugetVersion }}
+  
+  - task: UseDotNet@2
+    inputs:
+      packageType: 'sdk'
+      version: ${{ parametrers.dotnetSdkVersion }}
+  
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'restore'
+      projects: '$(Solution)'
+      feedsToUse: 'select'
+  
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'test'
+      projects: '$(UnitTestsProject)'
+  
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'publish'
+      publishWebProjects: false
+      projects: '$(WebAppProject)'
+      arguments: '-o $(Build.ArtifactStagingDirectory)/Output'
+      modifyOutputPath: true
+  
+  - publish: $(Build.ArtifactStagingDirectory)
+    artifact: 'drop'
