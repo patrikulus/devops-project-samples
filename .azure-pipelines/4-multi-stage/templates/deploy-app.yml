@@ -2,7 +2,7 @@ parameters:
   environment: ''
   appServicePlanName: '$(AppServicePlanName)'
   webAppName: '$(WebAppName)'
-  azureConnectionName: '$(AzureConnectionName)'
+  azureConnectionName: 'azure-objectivity-msdn'
   subscriptionId: '$(SubscriptionId)'
   resourceGroupName: '$(ResourceGroupName)'
   location: 'North Europe'
