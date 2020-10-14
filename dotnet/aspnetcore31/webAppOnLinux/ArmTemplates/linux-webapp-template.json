@@ -18,10 +18,6 @@
         "linuxFxVersion": {
             "type": "string",
             "defaultValue": "dotnetcore|3.1"
-        },
-        "startupCommand": {
-            "type": "string",
-            "defaultValue": ""
         }
     },
     "resources": [
@@ -38,7 +34,6 @@
                             "value": "[reference(resourceId('microsoft.insights/components/', parameters('webAppName')), '2015-05-01').InstrumentationKey]"
                         }
                     ],
-                    "appCommandLine": "[parameters('startupCommand')]",
                     "linuxFxVersion": "[parameters('linuxFxVersion')]"
                 },
                 "serverFarmId": "[concat('/subscriptions/', subscription().subscriptionId,'/resourcegroups/', resourceGroup().name, '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
