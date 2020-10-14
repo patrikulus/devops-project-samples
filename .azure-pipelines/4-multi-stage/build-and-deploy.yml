@@ -13,6 +13,9 @@ stages:
       
 - stage: deploy_test
   dependsOn: build_app
+  variables:
+  - group: ms-common
+  - group: ms-test
   jobs:
   - template: templates/deploy-app.yml
     parameters:
@@ -20,6 +23,9 @@ stages:
 
 - stage: deploy_prod
   dependsOn: [build_app, deploy_test]
+  variables:
+  - group: ms-common
+  - group: ms-prod
   jobs:
   - template: templates/deploy-app.yml
     parameters:
