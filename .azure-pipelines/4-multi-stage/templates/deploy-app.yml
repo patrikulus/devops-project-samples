@@ -8,14 +8,13 @@ parameters:
   location: 'North Europe'
   sku: 'F1'
 
-variables:
-- group: ms-common
-- group: ms-${{ parameters.environment }}
-
 jobs:
 - deployment: deploy
   displayName: 'Deploy app on ${{ parameters.environment }}'
   environment: ${{ parameters.environment }}
+  variables:
+  - group: ms-common
+  - group: ms-${{ parameters.environment }}
   strategy:
     runOnce:
       preDeploy:
