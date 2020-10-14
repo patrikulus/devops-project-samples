@@ -1,0 +1,46 @@
+trigger:
+- master
+
+pr: none
+
+pool: 'DevOps'
+
+variables:
+  Nuget.Version: '5.7.0'
+  DotNet.Version: '3.1.x'
+  SolutionRootPath: 'dotnet/aspnetcore31/webappWithTests/Application'
+  Solution: '$(SolutionRootPath)/aspnet-core-dotnet-core.sln'
+  UnitTestsProject: '$(SolutionRootPath)/*.UnitTests/*.csproj'
+  WebAppProject: '$(SolutionRootPath)/aspnet-core-dotnet-core/*.csproj'
+
+steps:
+- task: NuGetToolInstaller@1
+  inputs:
+    versionSpec: $(Nuget.Version)
+
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: $(DotNet.Version)
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: '$(Solution)'
+    feedsToUse: 'select'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: '$(UnitTestsProject)'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: '$(WebAppProject)'
+    arguments: '-o $(Build.ArtifactStagingDirectory)/Output'
+    modifyOutputPath: true
+
+- publish: $(Build.ArtifactStagingDirectory)
+  artifact: 'drop'

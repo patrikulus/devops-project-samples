@@ -1,0 +1,52 @@
+trigger: none
+pr: none
+
+parameters:
+  environment: '$(Environment)'
+  appServicePlanName: '$(AppServicePlanName)'
+  webAppName: '$(WebAppName)'
+  azureConnectionName: '$(AzureConnectionName)'
+  subscriptionId: '$(SubscriptionId)'
+  resourceGroupName: '$(ResourceGroupName)'
+  location: 'North Europe'
+  sku: 'F1'
+
+jobs:
+- deployment: deploy
+  displayName: 'Deploy app on ${{ parameters.environment }}'
+  environment: ${{ parameters.environment }}
+  strategy:
+    runOnce:
+      preDeploy:
+        steps:
+        - download: current
+        - task: AzureResourceManagerTemplateDeployment@3
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '${{ parameters.azureConnectionName }}'
+            subscriptionId: '${{ parameters.subscriptionId }}'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '${{ parameters.resourceGroupName }}'
+            location: '${{ parameters.location }}'
+            templateLocation: 'URL of the file'
+            csmFileLink: 'https://raw.githubusercontent.com/patrikulus/devops-project-samples/master/dotnet/aspnetcore31/webAppOnLinux/ArmTemplates/linux-webapp-template.json'
+            overrideParameters: '-webAppName ${{ parameters.webAppName }} -hostingPlanName ${{ parameters.appServicePlanName }} -appInsightsLocation ${{ parameters.location }} -sku ${{ parameters.sku }}'
+      deploy:
+        steps:
+        - download: current
+        - task: AzureRmWebAppDeployment@4
+          displayName: 'Deploy Azure App Service'
+          inputs:
+            ConnectionType: 'AzureRM'
+            azureSubscription: 'azure-objectivity-msdn'
+            appType: 'webAppLinux'
+            WebAppName: 'foo'
+            packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+            packageForLinux: '$(Pipeline.Workspace)/$(ArtifactName)/app/aspnet-core-dotnet-core.zip'
+      on:
+        failure:
+          steps:
+          - script: 'curl https://maker.ifttt.com/trigger/deployment_failed/with/key/$(MakerKey)'
+        success:
+          steps:
+          - script: 'curl https://maker.ifttt.com/trigger/deployment_success/with/key/$(MakerKey)'

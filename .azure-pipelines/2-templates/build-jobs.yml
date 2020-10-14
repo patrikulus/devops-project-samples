@@ -1,0 +1,16 @@
+trigger:
+- master
+
+pr: none
+
+jobs:
+- job: build_webappWithTests
+  template: templates/build-dotnet-app.yml
+  parameters:
+    solutionRootPath: 'dotnet/aspnetcore31/webappWithTests/Application'
+
+- job: build_webAppOnLinux
+  template: templates/build-dotnet-app.yml
+  parameters:
+    solutionRootPath: 'dotnet/aspnetcore31/webAppOnLinux/Application'
+   
