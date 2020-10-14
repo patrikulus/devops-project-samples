@@ -36,7 +36,7 @@ jobs:
             resourceGroupName: '$(ResourceGroupName)'
             location: '$(Location)'
             csmFile: '$(Pipeline.Workspace)/**/arm/*.json'
-            overrideParameters: '-webAppName $(WebAppName) -hostingPlanName $(AppServicePlanName) -appInsightsLocation $(Location) -sku $(Sku)'
+            overrideParameters: '-webAppName $(WebAppName) -hostingPlanName $(AppServicePlanName) -appInsightsLocation "NorthEurope" -sku $(Sku)'
       deploy:
         steps:
         - download: BuildApp
