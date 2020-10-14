@@ -44,7 +44,7 @@ jobs:
     
   - task: CopyFiles@2
     inputs:
-      SourceFolder: $(SolutionRootPath)/../ArmTemplates
+      SourceFolder: ${{ parameters.solutionRootPath }}/../ArmTemplates
       TargetFolder: '$(Build.ArtifactStagingDirectory)/arm'
   
   - publish: $(Build.ArtifactStagingDirectory)
