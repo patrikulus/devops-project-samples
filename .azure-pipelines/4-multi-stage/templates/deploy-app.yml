@@ -28,6 +28,7 @@ jobs:
     runOnce:
       preDeploy:
         steps:
+        - download: BuildApp
         - task: AzureResourceManagerTemplateDeployment@3
           inputs:
             deploymentScope: 'Resource Group'
@@ -36,8 +37,7 @@ jobs:
             action: 'Create Or Update Resource Group'
             resourceGroupName: '${{ parameters.resourceGroupName }}'
             location: '${{ parameters.location }}'
-            templateLocation: 'URL of the file'
-            csmFileLink: 'https://raw.githubusercontent.com/patrikulus/devops-project-samples/master/dotnet/aspnetcore31/webAppOnLinux/ArmTemplates/linux-webapp-template.json'
+            csmFileLink: 'https://filebin.net/wbdsa7lyjj5z9l1c/windows-webapp-template.json?t=e88h4v5z'
             overrideParameters: '-webAppName ${{ parameters.webAppName }} -hostingPlanName ${{ parameters.appServicePlanName }} -appInsightsLocation ${{ parameters.location }} -sku ${{ parameters.sku }}'
       deploy:
         steps:
