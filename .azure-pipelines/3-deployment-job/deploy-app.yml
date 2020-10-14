@@ -35,7 +35,7 @@ jobs:
             resourceGroupName: '$(ResourceGroupName)'
             location: '$(Location)'
             templateLocation: 'URL of the file'
-            csmFileLink: 'https://raw.githubusercontent.com/patrikulus/devops-project-samples/feature/pipelines/dotnet/aspnetcore31/webAppOnLinux/ArmTemplates/linux-webapp-template.json'
+            csmFileLink: 'https://github.com/patrikulus/devops-project-samples/blob/master/dotnet/aspnetcore31/webappWithTests/ArmTemplates/windows-webapp-template.json'
             overrideParameters: '-webAppName $(WebAppName) -hostingPlanName $(AppServicePlanName) -appInsightsLocation $(Location) -sku $(Sku)'
       deploy:
         steps:
