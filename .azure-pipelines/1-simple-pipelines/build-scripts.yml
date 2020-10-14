@@ -24,7 +24,7 @@ steps:
     version: $(DotNet.Version)
 
 - script: dotnet restore '$(Solution)'
-- script: dotnet test '$(UnitTestsPath)' --logger trx --results-directory $(Agent.TempDirectory)
+- script: dotnet test '$(UnitTestsProject)' --logger trx --results-directory $(Agent.TempDirectory)
 - script: dotnet publish '$(WebAppProject)' -o '$(Build.ArtifactStagingDirectory)/Output'
 
 - publish: $(Build.ArtifactStagingDirectory)
