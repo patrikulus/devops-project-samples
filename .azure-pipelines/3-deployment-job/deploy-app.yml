@@ -26,6 +26,7 @@ jobs:
     runOnce:
       preDeploy:
         steps:
+        - download: BuildApp
         - task: AzureResourceManagerTemplateDeployment@3
           inputs:
             deploymentScope: 'Resource Group'
@@ -34,8 +35,7 @@ jobs:
             action: 'Create Or Update Resource Group'
             resourceGroupName: '$(ResourceGroupName)'
             location: '$(Location)'
-            templateLocation: 'URL of the file'
-            csmFileLink: 'https://filebin.net/wbdsa7lyjj5z9l1c/windows-webapp-template.json?t=e88h4v5z'
+            csmFile: '$(Pipeline.Workspace)/drop/arm/windows-webapp-template.json'
             overrideParameters: '-webAppName $(WebAppName) -hostingPlanName $(AppServicePlanName) -appInsightsLocation $(Location) -sku $(Sku)'
       deploy:
         steps:
