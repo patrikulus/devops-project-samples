@@ -6,6 +6,7 @@ parameters:
 
 jobs:
 - job: build_dotnet_app_${{ parameters.appName }}
+  displayName: 'Build dotnet app'
   pool: 'DevOps'
   variables:
     Solution: '${{ parameters.solutionRootPath }}/**/*.csproj'
