@@ -7,8 +7,10 @@ jobs:
 - template: templates/build-dotnet-app.yml
   parameters:
     solutionRootPath: 'dotnet/aspnetcore31/webappWithTests/Application'
+    appName: 'webappWithTests'
 
 - template: templates/build-dotnet-app.yml
   parameters:
     solutionRootPath: 'dotnet/aspnetcore31/webAppOnLinux/Application'
+    appName: 'webAppOnLinux'
    
