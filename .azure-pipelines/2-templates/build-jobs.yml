@@ -6,13 +6,13 @@ pr: none
 jobs:
 - job: build_webappWithTests
   steps:
-  - template: .azure-pipelines/2-templates/templates/build-dotnet-app.yml
+  - template: templates/build-dotnet-app.yml
     parameters:
       solutionRootPath: 'dotnet/aspnetcore31/webappWithTests/Application'
 
 - job: build_webAppOnLinux
   steps:
-  - template: .azure-pipelines/2-templates/templates/build-dotnet-app.yml
+  - template: templates/build-dotnet-app.yml
     parameters:
       solutionRootPath: 'dotnet/aspnetcore31/webAppOnLinux/Application'
    
