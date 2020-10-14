@@ -35,7 +35,7 @@ jobs:
             action: 'Create Or Update Resource Group'
             resourceGroupName: '$(ResourceGroupName)'
             location: '$(Location)'
-            csmFile: '$(System.DefaultWorkingDirectory)/**/arm/*.json'
+            csmFile: '$(Pipeline.Workspace)/**/arm/*.json'
             overrideParameters: '-webAppName $(WebAppName) -hostingPlanName $(AppServicePlanName) -appInsightsLocation $(Location) -sku $(Sku)'
       deploy:
         steps:
@@ -47,7 +47,7 @@ jobs:
             azureSubscription: '$(AzureConnectionName)'
             appType: 'webAppLinux'
             WebAppName: '$(WebAppName)'
-            packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+            packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
       on:
         failure:
           steps:
