@@ -41,6 +41,11 @@ steps:
     projects: '$(WebAppProject)'
     arguments: '-o $(Build.ArtifactStagingDirectory)/Output'
     modifyOutputPath: true
+    
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: $(SolutionRootPath)/../ArmTemplates
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/arm'
 
 - publish: $(Build.ArtifactStagingDirectory)
   artifact: 'drop'
