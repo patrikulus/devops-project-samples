@@ -10,6 +10,9 @@ parameters:
   resourceGroupName: '$(ResourceGroupName)'
   location: 'North Europe'
   sku: 'F1'
+  
+variables:
+  group: ms-common
 
 jobs:
 - deployment: deploy
@@ -38,9 +41,9 @@ jobs:
           displayName: 'Deploy Azure App Service'
           inputs:
             ConnectionType: 'AzureRM'
-            azureSubscription: 'azure-objectivity-msdn'
+            azureSubscription: '${{ parameters.azureConnectionName }}'
             appType: 'webAppLinux'
-            WebAppName: 'foo'
+            WebAppName: '${{ parameters.webAppName }}'
             packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
             packageForLinux: '$(Pipeline.Workspace)/$(ArtifactName)/app/aspnet-core-dotnet-core.zip'
       on:

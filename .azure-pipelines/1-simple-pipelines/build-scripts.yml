@@ -10,8 +10,8 @@ variables:
   DotNet.Version: '3.1.x'
   SolutionRootPath: 'dotnet/aspnetcore31/webappWithTests/Application'
   Solution: '$(SolutionRootPath)/aspnet-core-dotnet-core.sln'
-  UnitTestsProject: '$(SolutionRootPath)/*.UnitTests/*.csproj'
-  WebAppProject: '$(SolutionRootPath)/aspnet-core-dotnet-core/*.csproj'
+  UnitTestsProject: '$(SolutionRootPath)/aspnet-core-dotnet-core.UnitTests/aspnet-core-dotnet-core.UnitTests.csproj'
+  WebAppProject: '$(SolutionRootPath)/aspnet-core-dotnet-core/aspnet-core-dotnet-core.csproj'
 
 steps:
 - task: NuGetToolInstaller@1
