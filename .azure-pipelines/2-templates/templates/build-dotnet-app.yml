@@ -19,7 +19,7 @@ jobs:
   - task: UseDotNet@2
     inputs:
       packageType: 'sdk'
-      version: ${{ parametrers.dotnetSdkVersion }}
+      version: ${{ parameters.dotnetSdkVersion }}
   
   - task: DotNetCoreCLI@2
     inputs:
