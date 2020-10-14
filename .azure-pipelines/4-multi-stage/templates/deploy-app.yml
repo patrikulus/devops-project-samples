@@ -2,7 +2,7 @@ trigger: none
 pr: none
 
 parameters:
-  environment: '$(Environment)'
+  environment: ''
   appServicePlanName: '$(AppServicePlanName)'
   webAppName: '$(WebAppName)'
   azureConnectionName: '$(AzureConnectionName)'
@@ -10,12 +10,7 @@ parameters:
   resourceGroupName: '$(ResourceGroupName)'
   location: 'North Europe'
   sku: 'F1'
-  
-resources:
-  pipelines:
-  - pipeline: BuildApp
-    source: 'Build app with tasks'
-  
+
 variables:
 - group: ms-common
 - group: ms-${{ parameters.environment }}
@@ -28,7 +23,7 @@ jobs:
     runOnce:
       preDeploy:
         steps:
-        - download: BuildApp
+        - download: current
         - task: AzureResourceManagerTemplateDeployment@3
           inputs:
             deploymentScope: 'Resource Group'
@@ -37,11 +32,11 @@ jobs:
             action: 'Create Or Update Resource Group'
             resourceGroupName: '${{ parameters.resourceGroupName }}'
             location: '${{ parameters.location }}'
-            csmFileLink: 'https://filebin.net/wbdsa7lyjj5z9l1c/windows-webapp-template.json?t=e88h4v5z'
-            overrideParameters: '-webAppName ${{ parameters.webAppName }} -hostingPlanName ${{ parameters.appServicePlanName }} -appInsightsLocation ${{ parameters.location }} -sku ${{ parameters.sku }}'
+            csmFile: '$(Pipeline.Workspace)/**/arm/*.json'
+            overrideParameters: '-webAppName ${{ parameters.webAppName }} -hostingPlanName ${{ parameters.appServicePlanName }} -appInsightsLocation "NorthEurope" -sku ${{ parameters.sku }}'
       deploy:
         steps:
-        - download: BuildApp
+        - download: current
         - task: AzureRmWebAppDeployment@4
           displayName: 'Deploy Azure App Service'
           inputs:

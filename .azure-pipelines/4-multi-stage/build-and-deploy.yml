@@ -1,0 +1,29 @@
+trigger:
+- master
+  
+pr: none
+
+stages:
+- stage: build_app
+  jobs:
+  - template: templates/build-dotnet-app.yml
+    parameters:
+      solutionRootPath: 'dotnet/aspnetcore31/webappWithTests/Application'
+      appName: 'webappWithTests'
+      
+- stage: deploy_test
+  jobs:
+  - template: templates/deploy-app.yml
+    dependsOn: build_app
+    parameters:
+      environment: test
+
+- stage: deploy_prod
+  jobs:
+  - template: templates/deploy-app.yml
+    dependsOn: [build_app, deploy_test]
+    parameters:
+      environment: prod
+
+
+   
