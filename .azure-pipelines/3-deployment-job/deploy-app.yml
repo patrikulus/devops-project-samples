@@ -11,8 +11,14 @@ parameters:
   location: 'North Europe'
   sku: 'F1'
   
+resources:
+  pipelines:
+  - pipeline: BuildApp
+    source: 'Build app with tasks'
+  
 variables:
   group: ms-common
+  group: ms-${{ parameters.environment }}
 
 jobs:
 - deployment: deploy
@@ -22,7 +28,6 @@ jobs:
     runOnce:
       preDeploy:
         steps:
-        - download: current
         - task: AzureResourceManagerTemplateDeployment@3
           inputs:
             deploymentScope: 'Resource Group'
@@ -36,7 +41,7 @@ jobs:
             overrideParameters: '-webAppName ${{ parameters.webAppName }} -hostingPlanName ${{ parameters.appServicePlanName }} -appInsightsLocation ${{ parameters.location }} -sku ${{ parameters.sku }}'
       deploy:
         steps:
-        - download: current
+        - download: BuildApp
         - task: AzureRmWebAppDeployment@4
           displayName: 'Deploy Azure App Service'
           inputs:
@@ -45,7 +50,6 @@ jobs:
             appType: 'webAppLinux'
             WebAppName: '${{ parameters.webAppName }}'
             packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
-            packageForLinux: '$(Pipeline.Workspace)/$(ArtifactName)/app/aspnet-core-dotnet-core.zip'
       on:
         failure:
           steps:
