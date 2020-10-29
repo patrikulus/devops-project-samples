@@ -8,11 +8,6 @@ parameters:
   location: 'North Europe'
   sku: 'F1'
 
-resources:
-  pipelines:
-  - pipeline: BuildApp
-    source: 'Build app with tasks'
-
 jobs:
 - deployment: deploy
   displayName: 'Deploy app on ${{ parameters.environment }}'
@@ -24,7 +19,7 @@ jobs:
     runOnce:
       preDeploy:
         steps:
-        - download: BuildApp
+        - download: current
         - task: AzureResourceManagerTemplateDeployment@3
           inputs:
             deploymentScope: 'Resource Group'
