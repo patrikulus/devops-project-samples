@@ -24,6 +24,3 @@ stages:
   - template: templates/deploy-app.yml
     parameters:
       environment: prod
-
-
-   
