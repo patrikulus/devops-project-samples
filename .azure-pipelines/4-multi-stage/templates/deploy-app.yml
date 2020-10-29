@@ -2,11 +2,16 @@ parameters:
   environment: ''
   appServicePlanName: '$(AppServicePlanName)'
   webAppName: '$(WebAppName)'
-  azureConnectionName: 'azure-objectivity-msdn'
+  azureConnectionName: 'azure-objectivity-msdn-a'
   subscriptionId: '$(SubscriptionId)'
   resourceGroupName: '$(ResourceGroupName)'
   location: 'North Europe'
   sku: 'F1'
+
+resources:
+  pipelines:
+  - pipeline: BuildApp
+    source: 'Build app with tasks'
 
 jobs:
 - deployment: deploy
@@ -19,7 +24,7 @@ jobs:
     runOnce:
       preDeploy:
         steps:
-        - download: current
+        - download: BuildApp
         - task: AzureResourceManagerTemplateDeployment@3
           inputs:
             deploymentScope: 'Resource Group'
@@ -41,6 +46,7 @@ jobs:
             appType: 'webAppLinux'
             WebAppName: '${{ parameters.webAppName }}'
             packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
+            
       on:
         failure:
           steps:
