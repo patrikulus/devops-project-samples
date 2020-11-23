@@ -19,7 +19,7 @@ stages:
       environment: test
 
 - stage: deploy_prod
-  dependsOn: build_app
+  dependsOn: deploy_test
   jobs:
   - template: templates/deploy-app.yml
     parameters:
